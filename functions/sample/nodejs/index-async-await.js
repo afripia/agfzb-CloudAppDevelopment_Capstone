@@ -2,17 +2,17 @@
  * Get all dealerships
  */
 
- const Cloudant = require('@cloudant/cloudant');
+const Cloudant = require('@cloudant/cloudant');
 
- var params = {
+var params = {
     "COUCH_USERNAME": "ceeedc5c-ae97-4b49-8621-08f97ef9c50d-bluemix",
     "IAM_API_KEY": "yXZDE1xPrN2KF7m1kEvhm81GxUYz9Abo98b5--5z0Auk",
-    "COUCH_URL": "https://ceeedc5c-ae97-4b49-8621-08f97ef9c50d-bluemix.cloudantnosqldb.appdomain.cloud"
+    "COUCH_URL": "https://ceeedc5c-ae97-4b49-8621-08f97ef9c50d-bluemix.cloudantnosqldb.appdomain.cloud",
+    "state": "bla be bla"
 }
 
-
-//  async function main(params) {
 async function main() {
+// async function main(params) {
      const cloudant = Cloudant({
          url: params.COUCH_URL,
          plugins: { iamauth: { iamApiKey: params.IAM_API_KEY } }
@@ -20,23 +20,38 @@ async function main() {
  
  
      try {
-         let dealerships = await new Promise(async resolve => {
-             let data = cloudant.db.use('dealerships');
-             let documents = await data.list({include_docs:true});
-             let results = []
-             if(documents.rows.length > 0){
-                for(let i = 0; i <= (documents.rows.length - 1); i++){
-                    results.push(documents.rows[i].doc);
+        if(params.state != null && params.state != ""){
+            let data = cloudant.db.use('dealerships');
+            let result = await data.find({ selector: { "state": params.state } });
+            
+            return { "dealerships": result.docs };
+        } else {
+             let dealerships = await new Promise(async resolve => {
+                 let data = cloudant.db.use('dealerships');
+                 let documents = await data.list({include_docs:true});
+                 let results = []
+                 if(documents.rows.length > 0){
+                    for(let i = 0; i <= (documents.rows.length - 1); i++){
+                        results.push(documents.rows[i].doc)
+                    }
+    
+                    resolve(results)
+                } else {
+                    resolve([])
                 }
-
-                resolve(results);
-            } else {
-                resolve([]);
-            }
-         });
-         return dealerships
+             });
+             
+            return { "dealerships": dealerships};
+        }
      } catch (error) {
-         return { error: error.description };
+         switch (error.statusCode) {
+             case 404:
+                return { error: "The database is empty" };
+            case 500:
+                return { error: "Something went wrong on the server" };
+             default:
+                return { error: error.description };
+         }
      }
  
 }
