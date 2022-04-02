@@ -8,7 +8,7 @@ var params = {
     "COUCH_USERNAME": "ceeedc5c-ae97-4b49-8621-08f97ef9c50d-bluemix",
     "IAM_API_KEY": "yXZDE1xPrN2KF7m1kEvhm81GxUYz9Abo98b5--5z0Auk",
     "COUCH_URL": "https://ceeedc5c-ae97-4b49-8621-08f97ef9c50d-bluemix.cloudantnosqldb.appdomain.cloud",
-    "state": "bla be bla"
+    "state": "TX"
 }
 
 async function main() {
@@ -21,14 +21,25 @@ async function main() {
  
      try {
         if(params.state != null && params.state != ""){
+            let state = params.state.toString();
             let data = cloudant.db.use('dealerships');
-            let result = await data.find({ selector: { "state": params.state } });
-            
-            return { "dealerships": result.docs };
+            let resultState = await data.find({ selector: { "state": state } });
+            console.log(resultState.docs)
+            if(resultState.docs.length > 0){
+                return { "dealerships": resultState.docs };
+            } else {
+                let resultST = await data.find({ selector: { "st": state } });
+                console.log(resultST.docs)
+                if(resultST.docs.length > 0){
+                    return { "dealerships": resultST.docs };
+                } else {
+                    return { "dealerships": []};
+                }
+            }
         } else {
              let dealerships = await new Promise(async resolve => {
-                 let data = cloudant.db.use('dealerships');
-                 let documents = await data.list({include_docs:true});
+                 let db = cloudant.db.use('dealerships');
+                 let documents = await db.list({include_docs:true});
                  let results = []
                  if(documents.rows.length > 0){
                     for(let i = 0; i <= (documents.rows.length - 1); i++){
