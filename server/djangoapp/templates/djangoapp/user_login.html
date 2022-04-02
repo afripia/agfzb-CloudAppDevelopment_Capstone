@@ -1,0 +1,22 @@
+{% extends "./base.html" %}
+
+{% block title %}Best Cars - Login{% endblock %}
+
+{% block content %}
+    <div class="card mx-auto" style="width: 20rem;">
+        <div class="card-body">
+            <form action="{% url 'djangoapp:login' %}"  method="post">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Login</h1>
+                <br>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter User Name: " required="" autofocus="">
+                <br>
+                <label for="psw" class="sr-only">Password</label>
+                <input type="password" name="psw" class="form-control" placeholder="Password" required="">
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

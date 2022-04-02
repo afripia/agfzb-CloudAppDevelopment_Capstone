@@ -1,0 +1,28 @@
+{% extends "./base.html" %}
+
+{% block title %}Best Cars - Signup{% endblock %}
+
+{% block content %}
+    <div class="card mx-auto" style="width: 35rem;">
+        <div class="card-body">
+            <form action="{% url 'djangoapp:registration' %}" method="post">
+                {% csrf_token %}
+                <h1 class="h3 mb-3 font-weight-normal">Sign Up</h1>
+                <br>
+                <label for="username" class="sr-only">Username</label>
+                <input type="text" name="username" class="form-control" placeholder="Enter Username: " required="" autofocus="">
+                <br>
+                <label for="firstname" class="sr-only">First name</label>
+                <input type="text" name="firstname" class="form-control" placeholder="Enter First Name: " required="" autofocus="">
+                <br>
+                <label for="lastname" class="sr-only">Last Name</label>
+                <input type="text" name="lastname" class="form-control" placeholder="Enter Last Name: " required="" autofocus="">
+                <br>
+                <label for="psw" class="sr-only">Password</label>
+                <input type="password" name="psw" class="form-control" placeholder="Password" required="">
+                <br>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
