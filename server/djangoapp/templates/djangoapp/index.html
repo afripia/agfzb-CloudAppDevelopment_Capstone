@@ -4,4 +4,7 @@
 
 {% block content %}
     <h2>Dealership Review</h2>
+    {% for dealership in dealerships %}
+        <div>{{dealership}}</div>
+    {% endfor %}
 {% endblock %}
