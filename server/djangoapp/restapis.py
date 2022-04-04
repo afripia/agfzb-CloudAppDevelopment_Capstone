@@ -37,6 +37,18 @@ def get_request(url, api_key = None, **kwargs):
 
 # Create a `post_request` to make HTTP POST requests
 # e.g., response = requests.post(url, params=kwargs, json=payload)
+def post_request(url, params=kwargs, json=payload):
+    try:
+        response = requests.post(url, params=kwargs, json=payload)
+
+    except:
+        # If any error occurs
+        print("Network exception occurred")
+
+    status_code = response.status_code
+    print("With status {} ".format(status_code))
+    json_data = json.loads(response.text)
+    return json_data
 
 
 def get_dealers_from_cf(url, **kwargs):
@@ -90,7 +102,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
                 sentiment = None
             )
 
-            dealer_review_obj.sentiment = analyze_review_sentiments(dealer_review_obj.review)
+            dealer_review_obj.sentiment = analyze_review_sentiments(dealer_review['review'])
 
             results.append(dealer_review_obj)
 
@@ -100,7 +112,7 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(dealerreview):
     try:
-        url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/63de4ccf-6fba-4143-88b4-cdf3f685f284'
+        url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/63de4ccf-6fba-4143-88b4-cdf3f685f284/v1/analyze'
         api_key = 'K2UdcPhYqjHRiciiAZI5ApZaKaVZ61XJZ19fa8SpDy5c'
 
         json_result = get_request(
@@ -109,20 +121,11 @@ def analyze_review_sentiments(dealerreview):
             text = dealerreview,
             version = '2021-08-01',
             features = {
-                "sentiment": {},
-                "categories": {},
-                "concepts": {},
-                "entities": {},
-                "keywords": {}
+                "sentiment": {}
             },
             return_analyzed_text = False
         )
 
-        print('json_result')
-        print(json_result)
-
-        return "None"
+        return json_result['sentiment']['document']['label']
     except:
-        print('except')
-        print(json_result)
         return "None"
