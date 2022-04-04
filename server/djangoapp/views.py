@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -98,14 +98,25 @@ def get_dealerships(request):
         # Return a list of dealer short name
         #return HttpResponse(dealer_names)
 
-        return render(request, 'djangoapp/index', {"dealerships": dealerships})
+        return render(request, 'djangoapp/index.html', {"dealerships": dealerships})
     else:
-        return render(request, 'djangoapp/index', {"dealerships": []})
+        return render(request, 'djangoapp/index.html', {"dealerships": []})
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
-# def get_dealer_details(request, dealer_id):
-# ...
+def get_dealer_details(request, dealer_id):
+    if request.method == "GET":
+        url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+        # Get dealers from the URL
+        dealer_reviews_list = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
+        # Concat all dealer's short name
+        # dealer_reviews = ' '.join([dealer_review.review for dealer_review in dealer_reviews_list])
+        # Return a list of dealer short name
+        # return HttpResponse(dealer_reviews)
+
+        return render(request, 'djangoapp/dealer_details.html', {"reviews": dealer_reviews_list})
+    else:
+        return render(request, 'djangoapp/dealer_details.html', {"reviews": []})
 
 # Create a `add_review` view to submit a review
 # def add_review(request, dealer_id):
