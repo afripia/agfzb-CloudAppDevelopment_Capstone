@@ -1,8 +1,43 @@
 {% extends "./base.html" %}
 
-{% block title %}Post Review{% endblock %}
+{% block title %}Review Dealership - Best Cars{% endblock %}
 
 {% block content %}
-    <h2>Post Review</h2>
-    
+    <div class="card mx-auto" style="width: 50rem;">
+        <div class="card-body">
+            <h2>Review Dealership</h2>
+            <hr>
+            <form>
+                <div class="form-group">
+                    <label for="name">Full name</label>
+                    <input type="text" class="form-control" name="name"placeholder="Enter your full name here...">
+                </div>
+                <div class="form-group">
+                    <label for="car_make">Car make</label>
+                    <input type="text" class="form-control" name="car_make" placeholder="Enter car make here...">
+                </div>
+                <div class="form-group">
+                    <label for="car_model">Car model</label>
+                    <input type="text" class="form-control" name="car_model" placeholder="Enter car model here...">
+                </div>
+                <div class="form-group">
+                    <label for="car_year">Car Year</label>
+                    <input type="text" class="form-control" name="car_year" placeholder="Enter car year here...">
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" name="purchase">
+                    <label class="form-check-label" for="purchase">Purchased</label>
+                </div>
+                <div class="form-group">
+                    <label for="purchase_date">Purchase date</label>
+                    <input type="text" class="form-control" name="purchase_date" placeholder="Enter purchase date here..." data-provide="datepicker">
+                </div>
+                <div class="form-group">
+                    <label for="review">Review</label>
+                    <textarea class="form-control" name="review" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
