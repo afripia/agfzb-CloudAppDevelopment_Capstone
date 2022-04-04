@@ -136,15 +136,17 @@ def add_review(request, dealer_id):
             review["car_model"] = request.POST["car_model"]
             review["car_year"] = request.POST["car_year"]
 
+            print(review)
+
             json_payload = {"review": review}
 
-            response = post_request(url, json_payload, dealerId=dealer_id)
+            # response = post_request(url, json_payload, dealerId=dealer_id)
 
-            print(response)
+            # print(response)
 
             return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=(dealer_id)))
         else:
-            return render(request, 'djangoapp/add_review.html')
+            return render(request, 'djangoapp/add_review.html', {"dealer_id": dealer_id})
 
     else:
         return HttpResponseRedirect(reverse(viewname='djangoapp:index'))
