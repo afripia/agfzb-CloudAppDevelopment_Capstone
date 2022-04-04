@@ -99,20 +99,30 @@ def get_dealer_reviews_from_cf(url, **kwargs):
 
 # Create an `analyze_review_sentiments` method to call Watson NLU and analyze text
 def analyze_review_sentiments(dealerreview):
-    url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/63de4ccf-6fba-4143-88b4-cdf3f685f284'
-    api_key = 'K2UdcPhYqjHRiciiAZI5ApZaKaVZ61XJZ19fa8SpDy5c'
+    try:
+        url = 'https://api.eu-gb.natural-language-understanding.watson.cloud.ibm.com/instances/63de4ccf-6fba-4143-88b4-cdf3f685f284'
+        api_key = 'K2UdcPhYqjHRiciiAZI5ApZaKaVZ61XJZ19fa8SpDy5c'
 
-    json_result = get_request(
-        url,
-        api_key,
-        text = dealerreview,
-        version = '2021-08-01'
-        features = {
-            "sentiment": {},
-            "categories": {},
-            "concepts": {},
-            "entities": {},
-            "keywords": {}
-        },
-        return_analyzed_text = False
-    )
+        json_result = get_request(
+            url,
+            api_key,
+            text = dealerreview,
+            version = '2021-08-01',
+            features = {
+                "sentiment": {},
+                "categories": {},
+                "concepts": {},
+                "entities": {},
+                "keywords": {}
+            },
+            return_analyzed_text = False
+        )
+
+        print('json_result')
+        print(json_result)
+
+        return "None"
+    except:
+        print('except')
+        print(json_result)
+        return "None"
