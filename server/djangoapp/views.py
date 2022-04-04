@@ -126,25 +126,26 @@ def add_review(request, dealer_id):
     if user.is_authenticated  :
         if request.method == "POST" :
             review = dict()
-            review["id"] = user.id
+            # review["id"] = user.id
             review["name"] = request.POST["name"]
             review["dealership"] = dealer_id
             review["review"] = request.POST["review"]
-            review["purchase"] = request.POST["purchase"]
+            review["purchase"] = True if request.POST.get('purchase') == 'on' else False
+            # review["another"] = request.POST["another"]
             review["purchase_date"] = request.POST["purchase_date"]
             review["car_make"] = request.POST["car_make"]
             review["car_model"] = request.POST["car_model"]
             review["car_year"] = request.POST["car_year"]
 
-            print(review)
-
             json_payload = {"review": review}
 
-            # response = post_request(url, json_payload, dealerId=dealer_id)
+            print(json_payload)
 
-            # print(response)
+            response = post_request(url, json_payload, dealerId=dealer_id)
 
-            return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=(dealer_id)))
+            print(response)
+
+            return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=[dealer_id]))
         else:
             return render(request, 'djangoapp/add_review.html', {"dealer_id": dealer_id})
 
