@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
-# from .models import related models
+from .models import CarModel
 from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request, get_dealer_by_id_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
@@ -114,7 +114,10 @@ def get_dealer_details(request, dealer_id):
         url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
         # Get dealers from the URL
         dealer_reviews_list = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
-        context = {"dealer_reviews_list": dealer_reviews_list}
+        context = {
+            "dealer_id": dealer_id,
+            "dealer_reviews_list": dealer_reviews_list
+        }
         # Concat all dealer's short name
         # dealer_reviews = ' '.join([dealer_review.review for dealer_review in dealer_reviews_list])
         # Return a list of dealer short name
@@ -153,9 +156,14 @@ def add_review(request, dealer_id):
 
             return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=[dealer_id]))
         else:
-            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/get-dealer"
             dealer = get_dealer_by_id_from_cf(url, dealerId=dealer_id)
             context = {"dealer": dealer}
+            car_models = CarModel.objects.filter(dealer_id=dealer_id)
+            context['cars'] = car_models
+
+            print('skfsdfjklsdjfklsdjflksdjf')
+            print(context)
             
             return render(request, 'djangoapp/add_review.html', context)
 

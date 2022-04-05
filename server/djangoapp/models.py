@@ -43,7 +43,7 @@ class CarModel(models.Model):
         max_length=20,
         choices=MODEL_TYPE,
     )
-    year = models.IntegerField()
+    year = models.DateField()
 
     def __str__(self):
         return self.name

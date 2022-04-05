@@ -3,12 +3,14 @@
 {% block title %}Dealer Details - Best Cars{% endblock %}
 
 {% block content %}
-    <h2>Reviews Review</h2>
+    <h2>Reviews</h2>
     <hr>
+    {% if user.is_authenticated %}
+        <a class="nav-link" href="{% url 'djangoapp:add_review' dealer_id %}">Add Review</a>
+    {% endif %}
     <div class="card-columns">
         {% for dealer_review in dealer_reviews_list %}
             <div class="card">
-                <div>{{dealer_review.sentiment}}</div>
                 {% if dealer_review.sentiment == 'positive' %}
                     <img class="card-img-left" src="{{MEDIA_URL}}/emoji/positive.png" />
                 {% elif dealer_review.sentiment == 'negative' %}

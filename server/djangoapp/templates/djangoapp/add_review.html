@@ -7,7 +7,7 @@
         <div class="card-body">
             <h2>Review Dealership</h2>
             <hr>
-            <form action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
+            <form action="{% url 'djangoapp:add_review' dealer.id %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="content">Enter the review content:</label>
