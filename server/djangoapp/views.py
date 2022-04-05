@@ -90,34 +90,40 @@ def registration_request(request):
 
 # Update the `get_dealerships` view to render the index page with a list of dealerships
 def get_dealerships(request):
+    context = {}
     if request.method == "GET":
         url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/dealership"
         # Get dealers from the URL
-        dealerships = get_dealers_from_cf(url)
+        dealership_list = get_dealers_from_cf(url)
+        context = {"dealership_list": dealership_list}
         # Concat all dealer's short name
         #dealer_names = ' '.join([dealer.short_name for dealer in dealerships])
         # Return a list of dealer short name
         #return HttpResponse(dealer_names)
 
-        return render(request, 'djangoapp/index.html', {"dealerships": dealerships})
+        return render(request, 'djangoapp/index.html', context)
     else:
-        return render(request, 'djangoapp/index.html', {"dealerships": []})
+        context = {"dealership_list": []}
+        return render(request, 'djangoapp/index.html', context)
 
 
 # Create a `get_dealer_details` view to render the reviews of a dealer
 def get_dealer_details(request, dealer_id):
+    context = {}
     if request.method == "GET":
         url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
         # Get dealers from the URL
         dealer_reviews_list = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
+        context = {"dealer_reviews_list": dealer_reviews_list}
         # Concat all dealer's short name
         # dealer_reviews = ' '.join([dealer_review.review for dealer_review in dealer_reviews_list])
         # Return a list of dealer short name
         # return HttpResponse(dealer_reviews)
 
-        return render(request, 'djangoapp/dealer_details.html', {"reviews": dealer_reviews_list})
+        return render(request, 'djangoapp/dealer_details.html', context)
     else:
-        return render(request, 'djangoapp/dealer_details.html', {"reviews": []})
+        context = {"dealer_reviews_list": []}
+        return render(request, 'djangoapp/dealer_details.html', context)
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):

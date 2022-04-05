@@ -70,6 +70,7 @@ def get_dealers_from_cf(url, **kwargs):
                 long=dealer["long"],
                 short_name=dealer["short_name"],
                 st=dealer["st"],
+                state=dealer["state"],
                 zip=dealer["zip"]
             )
 
