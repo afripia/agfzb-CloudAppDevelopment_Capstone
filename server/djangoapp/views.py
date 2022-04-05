@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, render, redirect
 # from .models import related models
-from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request
+from .restapis import get_dealers_from_cf, get_dealer_reviews_from_cf, post_request, get_dealer_by_id_from_cf
 from django.contrib.auth import login, logout, authenticate
 from django.contrib import messages
 from datetime import datetime
@@ -153,7 +153,11 @@ def add_review(request, dealer_id):
 
             return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=[dealer_id]))
         else:
-            return render(request, 'djangoapp/add_review.html', {"dealer_id": dealer_id})
+            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+            dealer = get_dealer_by_id_from_cf(url, dealerId=dealer_id)
+            context = {"dealer": dealer}
+            
+            return render(request, 'djangoapp/add_review.html', context)
 
     else:
         return HttpResponseRedirect(reverse(viewname='djangoapp:index'))

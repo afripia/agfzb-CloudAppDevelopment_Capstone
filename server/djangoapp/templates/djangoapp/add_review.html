@@ -7,12 +7,26 @@
         <div class="card-body">
             <h2>Review Dealership</h2>
             <hr>
-            <form action="{% url 'djangoapp:add_review' dealer_id=dealer_id %}" method="post">
+            <form action="{% url 'djangoapp:add_review' dealer_id %}" method="post">
                 {% csrf_token %}
+                <div class="form-group">
+                    <label for="content">Enter the review content:</label>
+                    <textarea class="form-control" id="content" name="content" rows="2" required></textarea>
+                </div>
+                <div class="form-group form-check">
+                    <input type="checkbox" class="form-check-input" id="purchasecheck" name="purchasecheck">
+                    <label class="form-check-label" for="purchasecheck">Has purchased the car from </label>
+                </div>
+
                 <div class="form-group">
                     <label for="name">Full name</label>
                     <input type="text" class="form-control" name="name"placeholder="Enter your full name here...">
                 </div>
+                <select name="car" id="car" class="form-select" required>
+                    {% for car in cars %}
+                        <option selected value={{car.id}}>{{car.name}}-{{car.make.name}}-{{ car.year|date:"Y" }}</option>
+                    {% endfor %}
+               </select>
                 <div class="form-group">
                     <label for="car_make">Car make</label>
                     <input type="text" class="form-control" name="car_make" placeholder="Enter car make here...">
@@ -25,18 +39,12 @@
                     <label for="car_year">Car Year</label>
                     <input type="text" class="form-control" name="car_year" placeholder="Enter car year here...">
                 </div>
-                <div class="form-group form-check">
-                    <input type="checkbox" class="form-check-input" id="purchase" name="purchase">
-                    <label class="form-check-label" for="purchase">Purchased</label>
-                </div>
+                
                 <div class="form-group">
-                    <label for="purchase_date">Purchase date</label>
-                    <input type="text" class="form-control" name="purchase_date" placeholder="Enter purchase date here..." data-provide="datepicker">
+                    <label for="purchasedate">Purchase date</label>
+                    <input type="text" class="form-control date-own" id="purchasedate" name="purchasedate" placeholder="Enter purchase date here..." data-provide="datepicker">
                 </div>
-                <div class="form-group">
-                    <label for="review">Review</label>
-                    <textarea class="form-control" name="review" rows="3"></textarea>
-                </div>
+                
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
