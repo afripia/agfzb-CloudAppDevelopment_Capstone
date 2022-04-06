@@ -30,7 +30,7 @@ DEBUG = True
 
 APPEND_SLASH = True
 
-ALLOWED_HOSTS = ["mkdrmash.eu-gb.mybluemix.net", "localhost"]
+ALLOWED_HOSTS = ["mkdrmash.eu-gb.mybluemix.net", "mkdrmash.eu-gb.cf.appdomain.cloud", "localhost"]
 
 
 # Application definition
