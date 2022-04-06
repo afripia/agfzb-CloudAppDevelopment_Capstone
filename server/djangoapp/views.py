@@ -36,6 +36,8 @@ def login_request(request):
     context = {}
     # Handles POST request
     if request.method == "POST":
+        print(request.POST['username'])
+        print(request.POST['psw'])
         # Get username and password from request.POST dictionary
         username = request.POST['username']
         password = request.POST['psw']
