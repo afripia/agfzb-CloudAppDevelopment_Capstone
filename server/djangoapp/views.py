@@ -96,7 +96,11 @@ def get_dealerships(request):
     if request.method == "GET":
         url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/dealership"
         # Get dealers from the URL
-        dealership_list = get_dealers_from_cf(url)
+        if request.GET.get('state', None) is not None :
+            dealership_list = get_dealers_from_cf(url, state=request.GET.get('state', None))
+        else :
+            dealership_list = get_dealers_from_cf(url)
+            
         context = {"dealership_list": dealership_list}
         # Concat all dealer's short name
         #dealer_names = ' '.join([dealer.short_name for dealer in dealerships])

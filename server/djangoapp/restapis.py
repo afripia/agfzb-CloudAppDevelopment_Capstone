@@ -54,7 +54,11 @@ def post_request(url, payload, **kwargs):
 def get_dealers_from_cf(url, **kwargs):
     results = []
     # Call get_request with a URL parameter
-    json_result = get_request(url, None)
+    if "state" in kwargs :
+        json_result = get_request(url, None, state=kwargs['state'])
+    else :
+        json_result = get_request(url, None)
+
     if json_result:
         # Get the row list in JSON as dealers
         dealers = json_result["dealerships"]
