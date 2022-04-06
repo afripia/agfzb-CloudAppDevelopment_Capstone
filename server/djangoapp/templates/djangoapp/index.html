@@ -111,9 +111,12 @@
 
       <script>
         $(function() {
-          $('#table').bootstrapTable()
-          $('.date-own').datepicker({
+            $('#table').bootstrapTable()
+            $('.date-own').datepicker({
                 format: 'mm/dd/yyyy'
+            });
+            $('#dealerships_state').change(function(event){
+                console.log(event)
             });
         })
       </script>
