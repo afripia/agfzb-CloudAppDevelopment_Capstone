@@ -130,29 +130,30 @@ def get_dealer_details(request, dealer_id):
 
 # Create a `add_review` view to submit a review
 def add_review(request, dealer_id):
-    url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
     user = request.user
     if user.is_authenticated  :
         if request.method == "POST" :
+            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+            car_model = get_object_or_404(CarModel, pk=request.POST['car'])
+            print(user.first_name + " " + user.last_name)
             review = dict()
             # review["id"] = user.id
-            review["name"] = request.POST["name"]
+            review["name"] = user.first_name + " " + user.last_name
             review["dealership"] = dealer_id
-            review["review"] = request.POST["review"]
-            review["purchase"] = True if request.POST.get('purchase') == 'on' else False
-            # review["another"] = request.POST["another"]
-            review["purchase_date"] = request.POST["purchase_date"]
-            review["car_make"] = request.POST["car_make"]
-            review["car_model"] = request.POST["car_model"]
-            review["car_year"] = request.POST["car_year"]
+            review["review"] = request.POST["content"]
+
+            purchased = True if request.POST.get('purchasecheck') == 'on' else False
+            if purchased :
+                review["purchase"] = purchased
+                review["purchase_date"] = request.POST['purchasedate']
+                review["car_make"] = car_model.make.name
+                review["car_model"] = car_model.name
+                review["car_year"] = car_model.year.strftime("%Y")
+            
 
             json_payload = {"review": review}
 
-            print(json_payload)
-
-            response = post_request(url, json_payload, dealerId=dealer_id)
-
-            print(response)
+            post_request(url, json_payload, dealerId=dealer_id)
 
             return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=[dealer_id]))
         else:
@@ -160,11 +161,7 @@ def add_review(request, dealer_id):
             dealer = get_dealer_by_id_from_cf(url, dealerId=dealer_id)
             context = {"dealer": dealer}
             car_models = CarModel.objects.filter(dealer_id=dealer_id)
-            context['cars'] = car_models
-
-            print('skfsdfjklsdjfklsdjflksdjf')
-            print(context)
-            
+            context['cars'] = car_models            
             return render(request, 'djangoapp/add_review.html', context)
 
     else:

@@ -80,7 +80,6 @@ def get_dealers_from_cf(url, **kwargs):
 
 # def get_dealer_by_id_from_cf(url, dealerId):
 def get_dealer_by_id_from_cf(url, **kwargs):
-    print(kwargs)
     result = None
     # Call get_request with a URL parameter
     json_result = get_request(url, None, dealerId=kwargs['dealerId'])
