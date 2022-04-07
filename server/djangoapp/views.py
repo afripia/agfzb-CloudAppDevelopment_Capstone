@@ -102,7 +102,7 @@ def registration_request(request):
 def get_dealerships(request):
     context = {}
     if request.method == "GET":
-        url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/dealership"
+        url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/bestcars/api/dealership"
         # Get dealers from the URL
         if request.GET.get('state', None) is not None :
             dealership_list = get_dealers_from_cf(url, state=request.GET.get('state', None))
@@ -125,7 +125,7 @@ def get_dealerships(request):
 def get_dealer_details(request, dealer_id):
     context = {}
     if request.method == "GET":
-        url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+        url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/bestcars/api/review"
         # Get dealers from the URL
         dealer_reviews_list = get_dealer_reviews_from_cf(url, dealerId=dealer_id)
         context = {
@@ -147,7 +147,7 @@ def add_review(request, dealer_id):
     user = request.user
     if user.is_authenticated  :
         if request.method == "POST" :
-            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
+            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/bestcars/api/review"
             car_model = get_object_or_404(CarModel, pk=request.POST['car'])
             review = dict()
             review["id"] = user.id
@@ -170,7 +170,7 @@ def add_review(request, dealer_id):
 
             return HttpResponseRedirect(reverse(viewname='djangoapp:dealer_details', args=[dealer_id]))
         else:
-            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/get-dealer"
+            url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/bestcars/api/get-dealer"
             dealer = get_dealer_by_id_from_cf(url, dealerId=dealer_id)
             context = {"dealer": dealer}
             car_models = CarModel.objects.filter(dealer_id=dealer_id)
