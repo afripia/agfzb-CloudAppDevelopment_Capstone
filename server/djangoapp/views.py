@@ -149,16 +149,15 @@ def add_review(request, dealer_id):
         if request.method == "POST" :
             url = "https://175caeaa.eu-gb.apigw.appdomain.cloud/busycars/api/review"
             car_model = get_object_or_404(CarModel, pk=request.POST['car'])
-            print(user.first_name + " " + user.last_name)
             review = dict()
-            # review["id"] = user.id
+            review["id"] = user.id
+            purchased = True if request.POST.get('purchasecheck') == 'on' else False
             review["name"] = user.first_name + " " + user.last_name
             review["dealership"] = dealer_id
             review["review"] = request.POST["content"]
+            review["purchase"] = purchased
 
-            purchased = True if request.POST.get('purchasecheck') == 'on' else False
             if purchased :
-                review["purchase"] = purchased
                 review["purchase_date"] = request.POST['purchasedate']
                 review["car_make"] = car_model.make.name
                 review["car_model"] = car_model.name

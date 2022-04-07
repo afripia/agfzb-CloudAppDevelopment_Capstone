@@ -53,7 +53,7 @@
     <div class="container mt-5">
         <h2>Dealership Review</h2>
         <hr>
-        <table class="table" id="table" data-filter-control="true">
+        <table class="table" id="table" data-filter-control="true" data-filter-control-container="#state">
             <thead>
             <tr>
                 <th scope="col">ID</th>
@@ -61,7 +61,11 @@
                 <th scope="col">City</th>
                 <th scope="col">Address</th>
                 <th scope="col">Zip</th>
-                <th scope="col" data-filter-control="select">State</th>
+                <th scope="col" data-filter-control="select">
+                    State
+                    <br>
+                    <select id="state" class="form-control bootstrap-table-filter-control-5" style="width: 100%;" dir="ltr"><option value=""></option><option value="Alabama">Alabama</option><option value="Arizona">Arizona</option><option value="California">California</option><option value="Colorado">Colorado</option><option value="Connecticut">Connecticut</option><option value="District of Columbia">District of Columbia</option><option value="Florida">Florida</option><option value="Georgia">Georgia</option><option value="Illinois">Illinois</option><option value="Iowa">Iowa</option><option value="Kansas">Kansas</option><option value="Louisiana" selected="selected">Louisiana</option><option value="Maryland">Maryland</option><option value="Michigan">Michigan</option><option value="Minnesota">Minnesota</option><option value="New Jersey">New Jersey</option><option value="New York">New York</option><option value="Pennsylvania">Pennsylvania</option><option value="Texas">Texas</option><option value="Virginia">Virginia</option><option value="Washington">Washington</option></select>
+                </th>
             </tr>
             </thead>
             <tbody>
@@ -112,11 +116,16 @@
       <script>
         $(function() {
             $('#table').bootstrapTable()
+            $('#state option[value="'+(new URL(window.location.href)).searchParams.get('state')+'"]').attr('selected', true)
+            $('#state').on('change', function (e) {
+                if($(this).val() == ""){
+                    window.location.href =  window.location.href.split('?')[0]  
+                } else {
+                    window.location.href="?state="+$(this).val()
+                }
+            })
             $('.date-own').datepicker({
                 format: 'mm/dd/yyyy'
-            });
-            $('#dealerships_state').change(function(event){
-                console.log(event)
             });
         })
       </script>
